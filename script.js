@@ -105,7 +105,8 @@
   function resizeCanvases() {
     width = window.innerWidth;
     height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isMobile = width < 768;
+    dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5);
 
     galaxyCanvas.width = width * dpr;
     galaxyCanvas.height = height * dpr;
@@ -155,21 +156,18 @@
     }
 
     draw(ctx) {
-      ctx.save();
       ctx.globalAlpha = this.alpha;
       ctx.fillStyle = this.color;
-      ctx.shadowBlur = this.size > 1.2 ? 6 : 0;
-      ctx.shadowColor = this.color;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
     }
   }
 
   function initStars() {
     stars = [];
-    const count = Math.min(Math.floor((width * height) / 4500), 220);
+    const isMobile = width < 600;
+    const count = isMobile ? 95 : Math.min(Math.floor((width * height) / 4500), 200);
     for (let i = 0; i < count; i++) {
       stars.push(new Star());
     }
@@ -343,8 +341,6 @@
       ctx.globalAlpha = Math.max(0, this.alpha);
       ctx.translate(this.x, this.y);
       ctx.rotate(this.rotation);
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = 10;
 
       if (this.type === 'heart') {
         ctx.fillStyle = this.color;
@@ -448,21 +444,15 @@
     draw(ctx) {
       for (let i = 0; i < this.trail.length; i++) {
         const pt = this.trail[i];
-        ctx.save();
-        ctx.globalAlpha = Math.max(pt.alpha, 0);
-        ctx.fillStyle = Math.random() < 0.3 ? '#ffffff' : this.color;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = this.color;
+        ctx.globalAlpha = Math.max(pt.alpha * 0.7, 0);
+        ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
       }
 
-      ctx.save();
+      ctx.globalAlpha = 1.0;
       ctx.fillStyle = '#ffffff';
-      ctx.shadowBlur = 16;
-      ctx.shadowColor = this.color;
       ctx.beginPath();
       ctx.arc(this.x, this.y, 3.2, 0, Math.PI * 2);
       ctx.fill();
@@ -470,9 +460,8 @@
       ctx.fillStyle = this.color;
       ctx.globalAlpha = 0.5;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, 6.5, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, 6.0, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
     }
   }
 
@@ -484,7 +473,7 @@
       this.isSparkle = isSparkle;
 
       const angle = Math.random() * Math.PI * 2;
-      const speed = isSparkle ? (Math.random() * 5 + 1) : (Math.random() * 8 + 2);
+      const speed = isSparkle ? (Math.random() * 4.5 + 1) : (Math.random() * 7 + 2);
 
       this.vx = Math.cos(angle) * speed;
       this.vy = Math.sin(angle) * speed;
@@ -509,15 +498,11 @@
     }
 
     draw(ctx) {
-      ctx.save();
       ctx.globalAlpha = Math.max(this.alpha, 0);
       ctx.fillStyle = this.color;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = this.color;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
     }
   }
 
@@ -527,8 +512,8 @@
       this.y = y;
       this.color = color;
       this.radius = 4;
-      this.maxRadius = Math.random() * 40 + 65;
-      this.alpha = 0.9;
+      this.maxRadius = Math.random() * 35 + 50;
+      this.alpha = 0.85;
       this.alive = true;
     }
 
@@ -541,16 +526,12 @@
     }
 
     draw(ctx) {
-      ctx.save();
       ctx.globalAlpha = Math.max(this.alpha, 0);
       ctx.strokeStyle = this.color;
-      ctx.lineWidth = 2.5;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = this.color;
+      ctx.lineWidth = 2.0;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.restore();
     }
   }
 
@@ -561,13 +542,17 @@
 
     shockwaves.push(new Shockwave(x, y, color));
 
+    const isMobile = width < 600;
+    const pCount = isMobile ? 36 : 72;
+    const sCount = isMobile ? 10 : 20;
+
     const colorPalette = [color, '#ffffff', '#ffe082', color];
-    for (let i = 0; i < 85; i++) {
+    for (let i = 0; i < pCount; i++) {
       const pColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
       particles.push(new Particle(x, y, pColor));
     }
 
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < sCount; i++) {
       particles.push(new Particle(x, y, '#ffffff', true));
     }
   }
