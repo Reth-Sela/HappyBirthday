@@ -62,11 +62,22 @@ class SoundEngine {
   }
 
   init() {
-    if (this.initialized) return;
+    if (this.initialized && this.ctx) return;
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
+
+        // Master output gain
+        this.masterGain = this.ctx.createGain();
+        this.masterGain.gain.setValueAtTime(1.0, this.ctx.currentTime);
+        this.masterGain.connect(this.ctx.destination);
+
+        // Dedicated background melody gain (starts enabled at gentle festive level)
+        this.musicGain = this.ctx.createGain();
+        this.musicGain.gain.setValueAtTime(0.72, this.ctx.currentTime);
+        this.musicGain.connect(this.masterGain);
+
         this.initialized = true;
       }
     } catch (e) {
@@ -77,8 +88,51 @@ class SoundEngine {
   resume() {
     this.init();
     if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      return this.ctx.resume().catch(() => {});
     }
+    return Promise.resolve();
+  }
+
+  /**
+   * Universal audio unlock & autoplay starter
+   * Satisfies mobile browser autoplay policies: unlocks AudioContext and starts background melody
+   */
+  unlockAndStart() {
+    this.init();
+    this.enabled = true;
+
+    const startIfReady = () => {
+      if (this.enabled && !this.musicPlaying) {
+        this.playBirthdaySong();
+      }
+    };
+
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume().then(() => {
+        startIfReady();
+      }).catch(() => {});
+    } else if (this.ctx) {
+      startIfReady();
+    }
+
+    // Pre-warm audio elements
+    try {
+      if (this.duduVoiceAudio) this.duduVoiceAudio.load();
+      if (this.duduLaughAudio) this.duduLaughAudio.load();
+    } catch (e) {}
+  }
+
+  /**
+   * Duck music volume down when Dudu is speaking/laughing, then restore
+   */
+  duckMusic(lower = true) {
+    if (!this.ctx || !this.musicGain) return;
+    try {
+      const now = this.ctx.currentTime;
+      this.musicGain.gain.cancelScheduledValues(now);
+      const target = lower ? 0.22 : 0.72;
+      this.musicGain.gain.linearRampToValueAtTime(target, now + 0.35);
+    } catch (e) {}
   }
 
   initSpeechSynthesis() {
@@ -100,12 +154,19 @@ class SoundEngine {
   }
 
   toggleSound() {
+    this.init();
+    // If audio was suspended or music wasn't playing, first click must ENABLE & PLAY (not mute!)
+    if ((this.ctx && this.ctx.state === 'suspended') || !this.musicPlaying) {
+      this.unlockAndStart();
+      this.enabled = true;
+      return true;
+    }
+
     this.enabled = !this.enabled;
-    if (!this.enabled && this.musicTimeout) {
-      clearTimeout(this.musicTimeout);
-      this.musicPlaying = false;
-    } else if (this.enabled && !this.musicPlaying) {
-      this.playBirthdaySong();
+    if (!this.enabled) {
+      this.stopMusic();
+    } else {
+      this.unlockAndStart();
     }
     return this.enabled;
   }
@@ -428,6 +489,12 @@ class SoundEngine {
     if (!this.enabled) return;
     this.resume();
 
+    // Duck background music slightly so Dudu's sweet voice is crystal clear
+    this.duckMusic(true);
+    const restoreMusic = () => {
+      setTimeout(() => this.duckMusic(false), 2400);
+    };
+
     // Accompany with magical bell notes
     this.playCuteVoiceGreeting();
 
@@ -440,16 +507,20 @@ class SoundEngine {
         if (playPromise !== undefined) {
           playPromise.then(() => {
             playedFile = true;
+            this.duduVoiceAudio.onended = restoreMusic;
           }).catch(() => {
             // Audio file absent or blocked, use cute SpeechSynthesis!
             this.speakGreetingText('祝你生日快乐，希望你喜欢哦！');
+            restoreMusic();
           });
         }
       } catch (e) {
         this.speakGreetingText('祝你生日快乐，希望你喜欢哦！');
+        restoreMusic();
       }
     } else {
       this.speakGreetingText('祝你生日快乐，希望你喜欢哦！');
+      restoreMusic();
     }
   }
 
@@ -549,12 +620,12 @@ class SoundEngine {
       osc2.frequency.setValueAtTime(freq * 2, now);
 
       gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.08, now + 0.04);
+      gain.gain.linearRampToValueAtTime(0.14, now + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + duration * 0.95);
 
       osc1.connect(gain);
       osc2.connect(gain);
-      gain.connect(this.ctx.destination);
+      gain.connect(this.musicGain || this.ctx.destination);
 
       osc1.start(now);
       osc2.start(now);

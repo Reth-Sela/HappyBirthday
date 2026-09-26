@@ -763,7 +763,7 @@
     }
 
     if (window.soundEngine) {
-      window.soundEngine.resume();
+      window.soundEngine.unlockAndStart();
     }
 
     const totalChars = charUnits.length;
@@ -1189,15 +1189,52 @@
     });
   }
 
-  // Instant audio unlock on ANY first tap/click anywhere (satisfies mobile browser autoplay policy)
-  const unlockAudio = () => {
+  const updateSoundUI = (enabled) => {
+    soundIcon.textContent = enabled ? '🔊' : '🔇';
+    soundToggleBtn.querySelector('.btn-text').textContent = enabled ? '音效' : '静音';
+  };
+
+  // Universal audio unlock & autoplay starter
+  const unlockAndStartAudio = (triggerSequence = false) => {
     if (window.soundEngine) {
-      window.soundEngine.resume();
+      window.soundEngine.unlockAndStart();
+      updateSoundUI(true);
+    }
+    if (interactivePrompt) {
+      interactivePrompt.classList.add('hidden');
+    }
+    if (triggerSequence && !sequenceRunning) {
+      startSequence();
     }
   };
-  window.addEventListener('pointerdown', unlockAudio, { once: true });
-  window.addEventListener('touchstart', unlockAudio, { once: true });
-  window.addEventListener('click', unlockAudio, { once: true });
+
+  // Immediate autoplay attempt (succeeds automatically if browser allows)
+  if (window.soundEngine) {
+    window.soundEngine.unlockAndStart();
+  }
+
+  // Universal first-touch unlock on ANY gesture across document (fulfills browser policy)
+  ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, () => unlockAndStartAudio(false), { passive: true, once: true });
+  });
+
+  // Tap anywhere on the page to start celebration with sound
+  let autoStartTimer = null;
+  const handleInitialTap = (e) => {
+    if (e.target.closest('button') || e.target.closest('input')) return;
+    if (autoStartTimer) clearTimeout(autoStartTimer);
+    unlockAndStartAudio(true);
+  };
+  window.addEventListener('click', handleInitialTap, { once: true });
+  window.addEventListener('touchstart', handleInitialTap, { once: true, passive: true });
+
+  if (interactivePrompt) {
+    interactivePrompt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (autoStartTimer) clearTimeout(autoStartTimer);
+      unlockAndStartAudio(true);
+    });
+  }
 
   window.addEventListener('click', handleScreenClick);
   window.addEventListener('touchstart', (e) => {
@@ -1219,10 +1256,8 @@
   soundToggleBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (window.soundEngine) {
-      window.soundEngine.resume();
       const isSoundOn = window.soundEngine.toggleSound();
-      soundIcon.textContent = isSoundOn ? '🔊' : '🔇';
-      soundToggleBtn.querySelector('.btn-text').textContent = isSoundOn ? '音效' : '静音';
+      updateSoundUI(isSoundOn);
     }
   });
 
@@ -1262,14 +1297,11 @@
   resizeCanvases();
   animate();
 
-  const autoStartTimer = setTimeout(() => {
+  // If user hasn't touched the screen after 2.5s, gracefully auto-start visual animation
+  autoStartTimer = setTimeout(() => {
     if (!sequenceRunning) {
       startSequence();
     }
-  }, 1200);
-
-  window.addEventListener('click', () => {
-    clearTimeout(autoStartTimer);
-  }, { once: true });
+  }, 2500);
 
 })();

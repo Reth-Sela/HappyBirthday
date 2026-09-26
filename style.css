@@ -1277,40 +1277,48 @@ html, body {
 /* Initial Click prompt */
 .interactive-prompt {
   position: absolute;
-  bottom: 45px;
+  bottom: clamp(40px, 9vh, 75px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 35;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 10px 24px;
+  background: rgba(22, 20, 42, 0.88);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 11px 24px;
   border-radius: 999px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
   font-family: var(--font-ui);
-  font-size: 0.9rem;
+  font-size: clamp(0.85rem, 3.8vw, 0.98rem);
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.25);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: auto;
+  user-select: none;
+  animation: promptFloat 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes promptFloat {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-6px); }
 }
 
 .prompt-pulse {
-  width: 8px;
-  height: 8px;
-  background: #ff4d8d;
+  width: 10px;
+  height: 10px;
+  background: #ffd033;
   border-radius: 50%;
-  animation: pulseRipple 1.8s infinite;
+  animation: pulseRipple 1.6s infinite;
 }
 
 @keyframes pulseRipple {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 141, 0.8); }
-  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 77, 141, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 141, 0); }
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 208, 51, 0.8); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(255, 208, 51, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 208, 51, 0); }
 }
 
 .interactive-prompt.hidden {
