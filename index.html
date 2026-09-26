@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>祝你生日快乐 | Happy Birthday 27,09</title>
+  <meta name="description" content="唯美浪漫星空烟花、气球升空与Bubu吹蜡烛、搬蛋糕、拉照片生日祝福">
+
+  <!-- Google Fonts: ZCOOL KuaiLe (Celebration), Ma Shan Zheng (Calligraphy), Noto Sans SC (Clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@500;700;900&family=Outfit:wght@400;600;800;900&family=ZCOOL+KuaiLe&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Galaxy Canvas (Stars, Nebulae, Meteors) & Fireworks Canvas -->
+  <canvas id="galaxyCanvas"></canvas>
+  <canvas id="fireworksCanvas"></canvas>
+
+  <!-- Atmospheric Nebula Overlay for Cosmic Depth -->
+  <div class="nebula-layer">
+    <div class="nebula-cloud nebula-1"></div>
+    <div class="nebula-cloud nebula-2"></div>
+    <div class="nebula-cloud nebula-3"></div>
+  </div>
+
+  <!-- Scene 1: Initial Characters & Date Balloons Floating to Space -->
+  <main class="birthday-container" id="birthdayContainer">
+    <div class="blessing-stage" id="blessingStage">
+
+      <!-- Row 1: 祝 你 生 日 快 乐 -->
+      <div class="characters-row main-row" id="mainRow">
+        <!-- Unit 1: 祝 -->
+        <div class="char-unit" id="unit-0" data-char="祝" data-color="#ff6097">
+          <div class="balloon-container" id="balloon-0">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-0" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#ff9ebb" />
+                  <stop offset="45%" stop-color="#ff6097" />
+                  <stop offset="90%" stop-color="#d61c60" />
+                  <stop offset="100%" stop-color="#8c0738" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-0)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <ellipse cx="23" cy="46" rx="3.5" ry="5.5" transform="rotate(-20 23 46)" fill="#ffffff" opacity="0.4" />
+              <path class="balloon-string" d="M50 122 Q46 145 53 168 T48 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter" id="char-0">祝</span>
+        </div>
+
+        <!-- Unit 2: 你 -->
+        <div class="char-unit" id="unit-1" data-char="你" data-color="#ff944d">
+          <div class="balloon-container" id="balloon-1">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-1" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#ffc187" />
+                  <stop offset="45%" stop-color="#ff944d" />
+                  <stop offset="90%" stop-color="#e05809" />
+                  <stop offset="100%" stop-color="#993600" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-1)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <ellipse cx="23" cy="46" rx="3.5" ry="5.5" transform="rotate(-20 23 46)" fill="#ffffff" opacity="0.4" />
+              <path class="balloon-string" d="M50 122 Q54 145 47 168 T52 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter" id="char-1">你</span>
+        </div>
+
+        <!-- Unit 3: 生 -->
+        <div class="char-unit" id="unit-2" data-char="生" data-color="#ffd033">
+          <div class="balloon-container" id="balloon-2">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-2" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#fff299" />
+                  <stop offset="45%" stop-color="#ffd033" />
+                  <stop offset="90%" stop-color="#d99f00" />
+                  <stop offset="100%" stop-color="#8a6100" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-2)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <ellipse cx="23" cy="46" rx="3.5" ry="5.5" transform="rotate(-20 23 46)" fill="#ffffff" opacity="0.4" />
+              <path class="balloon-string" d="M50 122 Q45 145 52 168 T47 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter" id="char-2">生</span>
+        </div>
+
+        <!-- Unit 4: 日 -->
+        <div class="char-unit" id="unit-3" data-char="日" data-color="#4eeb9c">
+          <div class="balloon-container" id="balloon-3">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-3" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#a4f8cd" />
+                  <stop offset="45%" stop-color="#4eeb9c" />
+                  <stop offset="90%" stop-color="#14aa5d" />
+                  <stop offset="100%" stop-color="#086634" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-3)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <ellipse cx="23" cy="46" rx="3.5" ry="5.5" transform="rotate(-20 23 46)" fill="#ffffff" opacity="0.4" />
+              <path class="balloon-string" d="M50 122 Q53 145 46 168 T51 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter" id="char-3">日</span>
+        </div>
+
+        <!-- Unit 5: 快 -->
+        <div class="char-unit" id="unit-4" data-char="快" data-color="#4ea8ff">
+          <div class="balloon-container" id="balloon-4">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-4" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#9ad1ff" />
+                  <stop offset="45%" stop-color="#4ea8ff" />
+                  <stop offset="90%" stop-color="#0a70dc" />
+                  <stop offset="100%" stop-color="#03458c" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-4)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <ellipse cx="23" cy="46" rx="3.5" ry="5.5" transform="rotate(-20 23 46)" fill="#ffffff" opacity="0.4" />
+              <path class="balloon-string" d="M50 122 Q47 145 54 168 T48 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter" id="char-4">快</span>
+        </div>
+
+        <!-- Unit 6: 乐 -->
+        <div class="char-unit" id="unit-5" data-char="乐" data-color="#c574ff">
+          <div class="balloon-container" id="balloon-5">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-5" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#e3b4ff" />
+                  <stop offset="45%" stop-color="#c574ff" />
+                  <stop offset="90%" stop-color="#8e1ee0" />
+                  <stop offset="100%" stop-color="#550a8c" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-5)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <ellipse cx="23" cy="46" rx="3.5" ry="5.5" transform="rotate(-20 23 46)" fill="#ffffff" opacity="0.4" />
+              <path class="balloon-string" d="M50 122 Q52 145 46 168 T50 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter" id="char-5">乐</span>
+        </div>
+      </div>
+
+      <!-- Row 2: 2 7 , 0 9 (Her Birthday Date Underneath) -->
+      <div class="characters-row date-row" id="dateRow">
+        <!-- Unit 7: 2 -->
+        <div class="char-unit date-unit" id="unit-6" data-char="2" data-color="#ff65a3">
+          <div class="balloon-container" id="balloon-6">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-6" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#ffb3d1" />
+                  <stop offset="45%" stop-color="#ff65a3" />
+                  <stop offset="90%" stop-color="#cf246a" />
+                  <stop offset="100%" stop-color="#7a0d3b" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-6)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <path class="balloon-string" d="M50 122 Q48 145 53 168 T49 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter date-letter" id="char-6">2</span>
+        </div>
+
+        <!-- Unit 8: 7 -->
+        <div class="char-unit date-unit" id="unit-7" data-char="7" data-color="#ffd15c">
+          <div class="balloon-container" id="balloon-7">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-7" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#fff5b8" />
+                  <stop offset="45%" stop-color="#ffd15c" />
+                  <stop offset="90%" stop-color="#d6990b" />
+                  <stop offset="100%" stop-color="#805700" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-7)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <path class="balloon-string" d="M50 122 Q52 145 47 168 T51 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter date-letter" id="char-7">7</span>
+        </div>
+
+        <!-- Unit 9: , (Comma / Separator) -->
+        <div class="char-unit date-unit comma-unit" id="unit-8" data-char="," data-color="#ffffff">
+          <div class="balloon-container" id="balloon-8">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-8" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="45%" stop-color="#ffbce2" />
+                  <stop offset="90%" stop-color="#ff599c" />
+                  <stop offset="100%" stop-color="#b3004b" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-8)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <path class="balloon-string" d="M50 122 Q49 145 52 168 T50 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter date-letter comma-letter" id="char-8">,</span>
+        </div>
+
+        <!-- Unit 10: 0 -->
+        <div class="char-unit date-unit" id="unit-9" data-char="0" data-color="#48e5c2">
+          <div class="balloon-container" id="balloon-9">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-9" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#a4f8e8" />
+                  <stop offset="45%" stop-color="#48e5c2" />
+                  <stop offset="90%" stop-color="#14aa8a" />
+                  <stop offset="100%" stop-color="#086652" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-9)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <path class="balloon-string" d="M50 122 Q47 145 53 168 T48 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter date-letter" id="char-9">0</span>
+        </div>
+
+        <!-- Unit 11: 9 -->
+        <div class="char-unit date-unit" id="unit-10" data-char="9" data-color="#bf77f6">
+          <div class="balloon-container" id="balloon-10">
+            <svg class="balloon-svg" viewBox="0 0 100 135" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="balloon-grad-10" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stop-color="#e0b8ff" />
+                  <stop offset="45%" stop-color="#bf77f6" />
+                  <stop offset="90%" stop-color="#882ad1" />
+                  <stop offset="100%" stop-color="#510c87" />
+                </radialGradient>
+              </defs>
+              <path class="balloon-body"
+                d="M50 5 C20 5 5 28 5 58 C5 86 35 110 46 117 L44 122 L56 122 L54 117 C65 110 95 86 95 58 C95 28 80 5 50 5 Z"
+                fill="url(#balloon-grad-10)" />
+              <ellipse cx="32" cy="28" rx="10" ry="16" transform="rotate(-25 32 28)" fill="#ffffff" opacity="0.65" />
+              <path class="balloon-string" d="M50 122 Q53 145 47 168 T52 190" fill="none"
+                stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.8" />
+            </svg>
+          </div>
+          <div class="char-glow-aura"></div>
+          <span class="char-letter date-letter" id="char-10">9</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scene 2: Interactive Cake Assembly & Bubu Birthday Story Stage -->
+  <section class="story-stage" id="storyStage">
+
+    <!-- Group A: Cake & Bubu (Blowing candle & Carrying cake away) -->
+    <div class="cake-scene-group" id="cakeSceneGroup">
+      <!-- Upright Drop Cake Construction -->
+      <div class="cake-container" id="cakeContainer">
+        <!-- 1. Cake Plate (Bottom base) -->
+        <div class="cake-plate cake-drop-item" id="cakePlate"></div>
+
+        <!-- 2. Bottom Sponge Tier -->
+        <div class="cake-tier cake-tier-bottom cake-drop-item" id="cakeBottom">
+          <div class="tier-stripe"></div>
+        </div>
+
+        <!-- 3. Strawberry Cream Filling -->
+        <div class="cake-filling cake-drop-item" id="cakeFilling"></div>
+
+        <!-- 4. Top Sponge Tier -->
+        <div class="cake-tier cake-tier-top cake-drop-item" id="cakeTop">
+          <div class="tier-stripe"></div>
+        </div>
+
+        <!-- 5. Vanilla Cream Frosting with Dripping Icing -->
+        <div class="cake-frosting cake-drop-item" id="cakeFrosting">
+          <div class="drip-row">
+            <span class="drip drip-1"></span>
+            <span class="drip drip-2"></span>
+            <span class="drip drip-3"></span>
+            <span class="drip drip-4"></span>
+            <span class="drip drip-5"></span>
+            <span class="drip drip-6"></span>
+          </div>
+        </div>
+
+        <!-- 6. Candle with Wick and Flame -->
+        <div class="cake-candle cake-drop-item" id="cakeCandle">
+          <div class="candle-stripes"></div>
+          <div class="candle-wick"></div>
+          <div class="candle-flame" id="candleFlame">
+            <div class="flame-core"></div>
+          </div>
+          <div class="candle-glow" id="candleGlow"></div>
+          <div class="smoke-wisp" id="smokeWisp"></div>
+        </div>
+      </div>
+
+      <!-- Bubu Character at Cake Phase -->
+      <div class="bubu-character" id="bubuCake">
+        <div class="bubu-sprite-box">
+          <img id="bubuCakeImg" src="assets/bubu_sym.png" alt="Bubu Cute Brown Bear" class="bubu-sprite" />
+          <div class="wind-puff" id="windPuff">💨</div>
+          <div class="dudu-laugh-bubble" id="duduLaughBubble">
+            <span>嘻嘻~ 💕</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group B: Bubu Pulling Photo from Left Side to Middle -->
+    <div class="photo-pull-group" id="photoPullGroup">
+      <!-- Bubu holding & pulling photo -->
+      <div class="bubu-puller" id="bubuPuller">
+        <div class="bubu-sprite-box">
+          <img id="bubuPullerImg" src="assets/bubu_sym.png" alt="Bubu Pulling Photo" class="bubu-sprite" />
+        </div>
+        <!-- Speech bubble pops up when reaching middle -->
+        <div class="bubu-speech" id="bubuSpeech">
+          <div class="speech-line speech-line-1">祝你生日快乐 ✨</div>
+          <div class="speech-line speech-line-2">希望你喜欢哦 🥰</div>
+          <div class="speech-arrow"></div>
+        </div>
+      </div>
+
+      <!-- Polaroid Photo Frame (The birthday girl holding her pink cake) -->
+      <div class="polaroid-frame" id="polaroidFrame">
+        <div class="polaroid-pin">🌸</div>
+        <div class="photo-inner">
+          <img src="assets/birthday_girl.jpg" alt="Birthday Celebration" class="birthday-girl-photo" />
+          <div class="photo-glow-filter"></div>
+        </div>
+        <div class="polaroid-footer">
+          <h2 class="photo-title">✨ 祝你生日快乐 (27.09) ✨</h2>
+          <p class="photo-wish">愿所有美好如期而至 · 每一岁都奔赴在热爱里</p>
+        </div>
+        <div class="floating-stickers">
+          <span class="sticker s-heart">💖</span>
+          <span class="sticker s-star">⭐</span>
+          <span class="sticker s-sparkle">✨</span>
+          <span class="sticker s-cake">🎂</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Actions Bar: Wish & Replay -->
+    <div class="story-actions" id="storyActions">
+      <div class="actions-group">
+        <button id="makeWishBtn" class="btn-glow btn-wish">
+          <span class="btn-icon">🌟</span> 许个愿吧
+        </button>
+        <button id="replayBtn" class="btn-glow btn-replay">
+          <span class="btn-icon">🎆</span> 再看一次
+        </button>
+      </div>
+      <p class="click-hint">✨ 提示：滑动屏幕挥舞魔法星光棒 · 点击可放烟花 ✨</p>
+    </div>
+
+  </section>
+
+  <!-- Wish Modal Dialog -->
+  <div class="wish-modal-overlay" id="wishModalOverlay">
+    <div class="wish-modal-card">
+      <button class="wish-close-btn" id="wishCloseBtn" aria-label="关闭">×</button>
+      <div class="wish-header">
+        <div class="wish-star-icon">🌠</div>
+        <h3 class="wish-title">✨ 许下你的生日愿望 ✨</h3>
+        <p class="wish-subtitle">闭上双眼在心里许个愿，让超级流星送往浩瀚银河</p>
+      </div>
+      <div class="wish-input-wrap">
+        <textarea id="wishInput" class="wish-textarea" placeholder="写下你的小愿望（也可以只在心里默许哦）..." maxlength="80"></textarea>
+      </div>
+      <div class="quick-wishes" id="quickWishes">
+        <span class="wish-tag" data-wish="愿每一岁都奔赴在热爱里 💖">热爱与自由 💖</span>
+        <span class="wish-tag" data-wish="愿天天开心，所有烦恼都消散 🌸">天天开心 🌸</span>
+        <span class="wish-tag" data-wish="愿眼里有星河，身旁有暖阳 ✨">平安顺遂 ✨</span>
+      </div>
+      <button id="sendWishBtn" class="btn-glow send-wish-btn">
+        <span class="btn-icon">🚀</span> 送入银河 · 愿望成真
+      </button>
+    </div>
+  </div>
+
+  <!-- Cosmic Wish Confirmation Banner -->
+  <div class="wish-banner" id="wishBanner">
+    <div class="wish-banner-content">
+      <span class="banner-star">🌠</span>
+      <span class="banner-text" id="wishBannerText">愿望已送达银河，愿你所愿皆成真 ✨💖</span>
+    </div>
+  </div>
+
+  <!-- Top Floating Controls -->
+  <header class="top-nav">
+    <div class="brand-title">✨ MEYNEANG's Birthday · 27.09</div>
+    <div class="nav-controls">
+      <button id="soundToggleBtn" class="nav-btn" aria-label="音乐音效开关" title="开启/关闭声音">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-text">音效</span>
+      </button>
+      <button id="fontToggleBtn" class="nav-btn" aria-label="切换字体" title="切换艺术字体">
+        <span class="btn-text">字体: 俏皮</span>
+      </button>
+      <button id="quickReplayBtn" class="nav-btn" aria-label="重新播放" title="重新开始动画">
+        <span class="btn-text">重播 ↻</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Interactive prompt on start -->
+  <div class="interactive-prompt" id="interactivePrompt">
+    <div class="prompt-pulse"></div>
+    <p>点击屏幕开启音乐与星空烟花 🎵🎆</p>
+  </div>
+
+  <script src="sound.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
